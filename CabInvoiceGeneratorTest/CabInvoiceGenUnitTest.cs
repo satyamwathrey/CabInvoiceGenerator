@@ -8,12 +8,14 @@ namespace CabInvoiceGeneratorTest
     [TestClass]
     public class CabInvoiceGenUnitTest
     {
+
         public CabInvoiceGen generateNormalFare;
         [TestInitialize]
         public void Setup()
         {
             generateNormalFare = new CabInvoiceGen(RideType.NORMAL);
         }
+        // TC1.1 - Calculate fare
         [TestMethod]
         public void GivenProperDistanceAndTimeShouldResturnFare()
         {
@@ -23,6 +25,7 @@ namespace CabInvoiceGeneratorTest
             double actual = generateNormalFare.CalculateFare(time, distance);
             Assert.AreEqual(actual, expected);
         }
+        // TC1.2 - Given Imprope Time Distance Throw Esxception
         [TestMethod]
         public void GivenImproperTimeDistanceShouldThrowException()
         {
@@ -35,10 +38,12 @@ namespace CabInvoiceGeneratorTest
         [TestMethod]
         public void GivenMultipleRidesReturnAggregateFare()
         {
+            //Arrange
+            double actual, expected = 320;
             Ride[] cabRides = { new Ride(10, 15), new Ride(10, 15) };
-            InvoiceSummary expected = new InvoiceSummary(cabRides.Length, 320);
-            var actual = generateNormalFare.CalculateAgreegateFare(cabRides);
-
+            //Act
+            actual = generateNormalFare.CalculateAgreegateFare(cabRides);
+            //Assert
             Assert.AreEqual(actual, expected);
         }
 
@@ -49,21 +54,6 @@ namespace CabInvoiceGeneratorTest
             Ride[] cabRides = { };
             var nullRidesException = Assert.ThrowsException<CabInvoiceGeneratorException>(() => generateNormalFare.CalculateAgreegateFare(cabRides));
             Assert.AreEqual(CabInvoiceGeneratorException.ExceptionType.NULL_RIDES, nullRidesException.exceptionType);
-        }
-        [TestMethod]
-        [DataRow(1, 2, 320, 10, 15, 10, 15)]
-        public void GivenUserIdReturnInvoiceSummary(int userId, int cabRideCount, double totalFare, int time1, double distance1, int time2, double distance2)
-        {
-            RideRepository rideRepository = new RideRepository();
-            Ride[] userRides = { new Ride(time1, distance1), new Ride(time2, distance2) };
-            rideRepository.AddUserRidesToRepository(userId, userRides, RideType.NORMAL);
-            List<Ride> list = new List<Ride>();
-            list.AddRange(userRides);
-            InvoiceSummary userInvoice = new InvoiceSummary(cabRideCount, totalFare);
-
-            UserCabInvoiceService expected = new UserCabInvoiceService(list, userInvoice);
-            UserCabInvoiceService actual = rideRepository.ReturnInvoicefromRideRepository(userId);
-            Assert.AreEqual(actual.InvoiceSummary.totalFare, expected.InvoiceSummary.totalFare);
         }
     }
 }
