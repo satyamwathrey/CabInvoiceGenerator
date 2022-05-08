@@ -8,6 +8,7 @@ namespace CabInvoiceGenerator
 {
     public class CabInvoiceGen
     {
+
         public readonly int MINIMUM_FARE;
         public readonly int COST_PER_KM;
         public readonly int COST_PER_MINUTE;
@@ -20,6 +21,12 @@ namespace CabInvoiceGenerator
                 COST_PER_KM = 10;
                 COST_PER_MINUTE = 1;
                 MINIMUM_FARE = 5;
+            }
+            if (type.Equals(RideType.PREMIUM))
+            {
+                COST_PER_KM = 15;
+                COST_PER_MINUTE = 2;
+                MINIMUM_FARE = 20;
             }
         }
 
