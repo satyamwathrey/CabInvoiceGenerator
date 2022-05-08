@@ -15,7 +15,6 @@ namespace CabInvoiceGeneratorTest
         {
             generateNormalFare = new CabInvoiceGen(RideType.NORMAL);
         }
-        // TC1.1 - Calculate fare
         [TestMethod]
         public void GivenProperDistanceAndTimeShouldResturnFare()
         {
@@ -25,7 +24,6 @@ namespace CabInvoiceGeneratorTest
             double actual = generateNormalFare.CalculateFare(time, distance);
             Assert.AreEqual(actual, expected);
         }
-        // TC1.2 - Given Imprope Time Distance Throw Esxception
         [TestMethod]
         public void GivenImproperTimeDistanceShouldThrowException()
         {
@@ -38,12 +36,10 @@ namespace CabInvoiceGeneratorTest
         [TestMethod]
         public void GivenMultipleRidesReturnAggregateFare()
         {
-            //Arrange
-            double actual, expected = 320;
             Ride[] cabRides = { new Ride(10, 15), new Ride(10, 15) };
-            //Act
-            actual = generateNormalFare.CalculateAgreegateFare(cabRides);
-            //Assert
+            InvoiceSummary expected = new InvoiceSummary(cabRides.Length, 320);
+            var actual = generateNormalFare.CalculateAgreegateFare(cabRides);
+
             Assert.AreEqual(actual, expected);
         }
 
